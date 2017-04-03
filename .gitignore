@@ -20,3 +20,10 @@ build
 # other
 eclipse
 run
+
+*.txt
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat
+lib/SuperCore-1.11.2-1.0.jar
