@@ -5,9 +5,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import superscary.heavyinventories.calc.PlayerWeightCalculator;
+import superscary.heavyinventories.server.player.WeighablePlayer;
 import superscary.heavyinventories.server.config.WeightsConfig;
 
 /**
@@ -20,7 +22,7 @@ import superscary.heavyinventories.server.config.WeightsConfig;
  * the case of brief quotations embodied in critical reviews and
  * certain other noncommercial uses permitted by copyright law.
  */
-public class ClientEventHandler
+class ClientEventHandler
 {
 
 	public void register()
@@ -43,15 +45,18 @@ public class ClientEventHandler
 		}
 	}
 
-	/*@SubscribeEvent
-	public void playerJoin(EntityJoinWorldEvent event)
+	@SubscribeEvent
+	public void onPlayerJoinWorld(EntityJoinWorldEvent event)
 	{
 		if (event.getEntity() instanceof EntityPlayer)
 		{
-			WeighablePlayer player = WeighablePlayer.get((EntityPlayer) event.getEntity());
-			player.updateWeight();
+			EntityPlayer player = (EntityPlayer) event.getEntity();
+			if (event.getEntity().world.isRemote)
+			{
+				WeighablePlayer.get(player).requestSynchronization(true);
+			}
 		}
-	}*/
+	}
 
 	public Vec3d getPositionEyes(EntityPlayer player, float partialTick)
 	{

@@ -1,7 +1,8 @@
 package superscary.heavyinventories.client;
 
-import net.minecraftforge.common.MinecraftForge;
-import superscary.heavyinventories.client.player.PlayerCommonEventHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import superscary.supercore.proxy.IProxy;
 
 /**
@@ -23,7 +24,7 @@ public class ClientProxy implements IProxy
 		ClientEventHandler clientEventHandler = new ClientEventHandler();
 		clientEventHandler.register();
 
-		MinecraftForge.EVENT_BUS.register(new PlayerCommonEventHandler());
+		//MinecraftForge.EVENT_BUS.register(new PlayerCommonEventHandler());
 	}
 
 	@Override
@@ -36,6 +37,12 @@ public class ClientProxy implements IProxy
 	public void postInit()
 	{
 
+	}
+
+
+	public static EntityPlayer getPlayerFromContext(MessageContext context)
+	{
+		return Minecraft.getMinecraft().player;
 	}
 
 }

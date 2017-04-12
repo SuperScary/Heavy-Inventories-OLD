@@ -1,6 +1,7 @@
 package superscary.heavyinventories.server;
 
-import superscary.heavyinventories.client.player.WeighablePlayer;
+import superscary.heavyinventories.server.player.PlayerCommonEventHandler;
+import superscary.heavyinventories.server.player.WeighablePlayer;
 import superscary.supercore.proxy.IProxy;
 
 /**
@@ -26,6 +27,7 @@ public class ServerProxy implements IProxy
 	public void init()
 	{
 		WeighablePlayer.init();
+		PlayerCommonEventHandler.init();
 	}
 
 	@Override

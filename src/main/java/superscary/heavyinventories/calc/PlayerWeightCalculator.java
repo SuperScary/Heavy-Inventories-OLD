@@ -1,8 +1,8 @@
 package superscary.heavyinventories.calc;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
-import superscary.heavyinventories.client.player.WeighablePlayer;
 import superscary.heavyinventories.server.config.WeightsConfig;
 
 /**
@@ -18,12 +18,13 @@ import superscary.heavyinventories.server.config.WeightsConfig;
 public class PlayerWeightCalculator
 {
 
-	public static double calculateWeight(WeighablePlayer player)
+	public static double calculateWeight(EntityPlayer player)
 	{
 		double weight = 0;
 		for (int i = 0; i < player.inventory.getSizeInventory(); i++)
 		{
 			ItemStack stack = player.inventory.getStackInSlot(i);
+			//noinspection ConstantConditions
 			if (stack != null)
 			{
 				weight += getWeight(stack);

@@ -116,6 +116,7 @@ public class WeightsConfig
 
 	private static float generateWeight(Block block)
 	{
+		@SuppressWarnings("deprecation")
 		Material m = block.getMaterial(block.getDefaultState());
 		if (m == Material.AIR || m == Material.BARRIER || m == Material.FIRE || m == Material.PORTAL) return 0;
 		if (m == Material.CACTUS || m == Material.GRASS || m == Material.GOURD || m == Material.CRAFTED_SNOW

@@ -1,15 +1,16 @@
-package superscary.heavyinventories.client.player;
+package superscary.heavyinventories.server.player;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import superscary.heavyinventories.server.config.WeightsConfig;
 
 /**
@@ -23,9 +24,23 @@ import superscary.heavyinventories.server.config.WeightsConfig;
  * certain other noncommercial uses permitted by copyright law.
  */
 
-@Mod.EventBusSubscriber
+@SuppressWarnings("unused")
 public class PlayerCommonEventHandler
 {
+
+	public static void init()
+	{
+		MinecraftForge.EVENT_BUS.register(new PlayerCommonEventHandler());
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void onPlayerTick(TickEvent.PlayerTickEvent event)
+	{
+		if (event.phase.equals(TickEvent.Phase.END))
+		{
+			WeighablePlayer.get(event.player).update();
+		}
+	}
 
 	@SubscribeEvent
 	public void onPlayerJump(LivingEvent.LivingJumpEvent event)
