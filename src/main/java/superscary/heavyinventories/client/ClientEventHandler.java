@@ -1,16 +1,19 @@
 package superscary.heavyinventories.client;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 import superscary.heavyinventories.calc.PlayerWeightCalculator;
-import superscary.heavyinventories.server.player.WeighablePlayer;
 import superscary.heavyinventories.server.config.WeightsConfig;
+import superscary.heavyinventories.server.player.WeighablePlayer;
+import superscary.supercore.tools.EnumColor;
 
 /**
  * Copyright (c) 2017 by SuperScary(ERBF) http://codesynced.com
@@ -40,7 +43,20 @@ class ClientEventHandler
 			double weight = PlayerWeightCalculator.getWeight(stack);
 			event.getToolTip().add(ChatFormatting.BOLD + "" + ChatFormatting.WHITE + "Weight: " + weight);
 			if (stack.getCount() > 1) {
-				event.getToolTip().add("Stack Weight: " + (weight * stack.getCount()));
+				event.getToolTip().add(I18n.format("hi.gui.weight") + " " + (weight * stack.getCount()));
+			}
+			else if (Minecraft.getMinecraft().currentScreen != null)
+			{
+				if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+				{
+					event.getToolTip()
+						 .add(I18n.format("hi.gui.maxStackWeight", stack.getMaxStackSize()) + " " + (weight * stack
+								 .getMaxStackSize()));
+				}
+				else
+				{
+					event.getToolTip().add(I18n.format("hi.gui.shift", EnumColor.YELLOW + "SHIFT" + EnumColor.GREY));
+				}
 			}
 		}
 	}
@@ -51,24 +67,13 @@ class ClientEventHandler
 		if (event.getEntity() instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) event.getEntity();
-			if (event.getEntity().world.isRemote)
+			if (player != null)
 			{
-				WeighablePlayer.get(player).requestSynchronization(true);
+				if (player.world.isRemote)
+				{
+					WeighablePlayer.get(player).requestSynchronization(true);
+				}
 			}
-		}
-	}
-
-	public Vec3d getPositionEyes(EntityPlayer player, float partialTick)
-	{
-		if (partialTick == 1.0F) {
-
-			return new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-		}
-		else {
-			double d0 = player.prevPosX + (player.posX - player.prevPosX) * partialTick;
-			double d1 = player.prevPosY + (player.posY - player.prevPosY) * partialTick + player.getEyeHeight();
-			double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTick;
-			return new Vec3d(d0, d1, d2);
 		}
 	}
 

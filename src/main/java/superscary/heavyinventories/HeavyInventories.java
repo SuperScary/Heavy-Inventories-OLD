@@ -9,9 +9,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import superscary.heavyinventories.server.config.WeightsConfig;
 import superscary.heavyinventories.server.player.network.PlayerUpdate;
 import superscary.heavyinventories.server.player.network.PlayerUpdateRequest;
-import superscary.heavyinventories.server.config.WeightsConfig;
 import superscary.heavyinventories.util.Constants;
 import superscary.supercore.info.Generator;
 import superscary.supercore.proxy.IProxy;
@@ -19,7 +19,7 @@ import superscary.supercore.proxy.IProxy;
 import static superscary.heavyinventories.util.Constants.*;
 
 @SuppressWarnings("unused")
-@Mod(modid = MODID, version = VERSION, name = NAME, dependencies = "required-after:supercore@[1.0,)", useMetadata = true)
+@Mod(modid = MODID, version = VERSION, name = NAME, dependencies = "required-after:supercore@[1.0,)")
 public class HeavyInventories
 {
 

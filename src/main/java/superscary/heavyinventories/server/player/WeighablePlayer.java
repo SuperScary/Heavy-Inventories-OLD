@@ -16,9 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import superscary.heavyinventories.HeavyInventories;
 import superscary.heavyinventories.calc.IWeighable;
 import superscary.heavyinventories.calc.PlayerWeightCalculator;
+import superscary.heavyinventories.server.config.WeightsConfig;
 import superscary.heavyinventories.server.player.network.PlayerUpdate;
 import superscary.heavyinventories.server.player.network.PlayerUpdateRequest;
-import superscary.heavyinventories.server.config.WeightsConfig;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public class WeighablePlayer implements IWeighable, ICapabilityProvider
 
 	public static WeighablePlayer getDefault()
 	{
-		return new WeighablePlayer();
+		return new WeighablePlayer(Minecraft.getMinecraft().player);
 	}
 
 	public WeighablePlayer()
