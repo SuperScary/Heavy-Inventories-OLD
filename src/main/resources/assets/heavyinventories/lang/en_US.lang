@@ -1,0 +1,16 @@
+# Splash Text
+hi.weightWarning=Your inventory is starting to feel heavy...
+hi.splash.noJump=Your inventory is too heavy!
+
+# Chat 
+hi.update.txt=Good news! A new version of Heavy Inventories is available!
+hi.notEnoughArgs.txt=Not Enough Arguments!
+
+# Keys
+key.heavyinventories.category=Heavy Inventories
+key.openGui=Open Config Gui
+
+# GUI
+hi.gui.shift=Hold %s for more information.
+hi.gui.weight=Stack Weight:
+hi.gui.maxStackWeight=Max Stack Weight (%s):

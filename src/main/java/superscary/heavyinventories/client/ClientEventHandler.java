@@ -8,7 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import superscary.heavyinventories.calc.PlayerWeightCalculator;
 import superscary.heavyinventories.server.config.WeightsConfig;
@@ -25,7 +28,9 @@ import superscary.supercore.tools.EnumColor;
  * the case of brief quotations embodied in critical reviews and
  * certain other noncommercial uses permitted by copyright law.
  */
-class ClientEventHandler
+@SideOnly(Side.CLIENT)
+@Mod.EventBusSubscriber
+public class ClientEventHandler
 {
 
 	public void register()
@@ -41,17 +46,18 @@ class ClientEventHandler
 		if (WeightsConfig.isEnabled) {
 			ItemStack stack = event.getItemStack();
 			double weight = PlayerWeightCalculator.getWeight(stack);
-			event.getToolTip().add(ChatFormatting.BOLD + "" + ChatFormatting.WHITE + "Weight: " + weight);
+			event.getToolTip().add(ChatFormatting.BOLD + "" + ChatFormatting.WHITE + "Weight: " + weight + " Stone");
 			if (stack.getCount() > 1) {
-				event.getToolTip().add(I18n.format("hi.gui.weight") + " " + (weight * stack.getCount()));
+				event.getToolTip().add(I18n.format("hi.gui.weight") + " " + (weight * stack.getCount()) + " Stone");
 			}
-			else if (Minecraft.getMinecraft().currentScreen != null)
+
+			if (Minecraft.getMinecraft().currentScreen != null)
 			{
 				if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 				{
 					event.getToolTip()
 						 .add(I18n.format("hi.gui.maxStackWeight", stack.getMaxStackSize()) + " " + (weight * stack
-								 .getMaxStackSize()));
+								 .getMaxStackSize()) + " Stone");
 				}
 				else
 				{
@@ -66,13 +72,11 @@ class ClientEventHandler
 	{
 		if (event.getEntity() instanceof EntityPlayer)
 		{
+
 			EntityPlayer player = (EntityPlayer) event.getEntity();
-			if (player != null)
+			if (event.getEntity().world.isRemote)
 			{
-				if (player.world.isRemote)
-				{
-					WeighablePlayer.get(player).requestSynchronization(true);
-				}
+				WeighablePlayer.get(player).requestSynchronization(true);
 			}
 		}
 	}

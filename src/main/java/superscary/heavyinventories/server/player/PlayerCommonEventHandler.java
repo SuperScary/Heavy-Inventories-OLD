@@ -1,17 +1,22 @@
 package superscary.heavyinventories.server.player;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import superscary.heavyinventories.server.config.WeightsConfig;
+
+import static superscary.heavyinventories.util.Constants.MODID;
 
 /**
  * Copyright (c) 2017 by SuperScary(ERBF) http://codesynced.com
@@ -25,6 +30,7 @@ import superscary.heavyinventories.server.config.WeightsConfig;
  */
 
 @SuppressWarnings("unused")
+@Mod.EventBusSubscriber
 public class PlayerCommonEventHandler
 {
 
@@ -48,7 +54,8 @@ public class PlayerCommonEventHandler
 		if (event.getEntityLiving() instanceof EntityPlayer)
 		{
 			EntityPlayer p = (EntityPlayer) event.getEntityLiving();
-			if (WeightsConfig.isEnabled && (!p.capabilities.isCreativeMode || WeightsConfig.allowInCreative) && WeighablePlayer.get(p).isEncumbered())
+			if (WeightsConfig.isEnabled && (!p.capabilities.isCreativeMode || WeightsConfig.allowInCreative)
+					&& WeighablePlayer.get(p).isEncumbered())
 			{
 				p.motionY *= 0;
 				if (p.world.isRemote)
@@ -85,6 +92,15 @@ public class PlayerCommonEventHandler
 	private void updateWeight(EntityPlayer player)
 	{
 		WeighablePlayer.get(player).updateWeight();
+	}
+
+	@SubscribeEvent
+	public void attachCapability(AttachCapabilitiesEvent.Entity event)
+	{
+		if (!(event.getEntity() instanceof EntityPlayer))
+		{ return; }
+		event.addCapability(new ResourceLocation(MODID + ":" + MODID),
+				new WeighablePlayer((EntityPlayer) event.getEntity()));
 	}
 
 }

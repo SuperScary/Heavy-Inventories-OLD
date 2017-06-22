@@ -20,7 +20,6 @@ import superscary.heavyinventories.server.config.WeightsConfig;
 import superscary.heavyinventories.server.player.network.PlayerUpdate;
 import superscary.heavyinventories.server.player.network.PlayerUpdateRequest;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,7 +103,8 @@ public class WeighablePlayer implements IWeighable, ICapabilityProvider
 	@SideOnly(Side.CLIENT)
 	public void requestSynchronization(boolean all)
 	{
-		Minecraft.getMinecraft().addScheduledTask(() -> HeavyInventories.getNetwork().sendToServer(new PlayerUpdateRequest(all)));
+		Minecraft.getMinecraft()
+				 .addScheduledTask(() -> HeavyInventories.networkWrapper.sendToServer(new PlayerUpdateRequest(all)));
 	}
 
 	public void update()
@@ -223,7 +223,7 @@ public class WeighablePlayer implements IWeighable, ICapabilityProvider
 
 	private static final Capability.IStorage<WeighablePlayer> storage = new Capability.IStorage<WeighablePlayer>()
 	{
-		@Nullable
+
 		@Override
 		public NBTBase writeNBT(Capability<WeighablePlayer> capability, WeighablePlayer instance, EnumFacing side)
 		{
